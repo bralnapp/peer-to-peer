@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	.layout-container {
+		@apply mx-auto w-11/12 lg:w-10/12;
+	}
+
+	.btn {
+		@apply bg-white text-black font-medium text-sm capitalize rounded flex items-center justify-center md:text-base md:leading-[18px];
+	}
+	.error {
+		@apply border border-red-500;
+	}
+}
