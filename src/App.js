@@ -1,9 +1,8 @@
-
-import LandingPage from 'src/modules/landingPage';
+import AppRouter from './router';
 
 function App() {
   return (
-    <LandingPage/>
+    <AppRouter />
   );
 }
 
