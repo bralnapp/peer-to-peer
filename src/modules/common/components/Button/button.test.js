@@ -16,4 +16,10 @@ describe('Button Component', () => {
         expect(buttonElement).toBeInTheDocument()
         expect(buttonElement).toHaveTextContent('get started')
     })
+
+    test('Button should render as a button and have a type submit', () => { 
+        render(<Button title='get started'/>)
+        const buttonElement = screen.getByRole("button")
+        expect(buttonElement).toHaveAttribute('type', 'submit')
+     })
 });
