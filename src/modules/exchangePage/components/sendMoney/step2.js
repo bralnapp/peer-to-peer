@@ -48,11 +48,11 @@ const StepTwo = ({ setFormData, formData, initialbankDetails }) => {
                 formData.accountNumber,
                 formData.bankCode
             );
-            if (response.status) {
+            if (response?.status) {
                 setFormData(prev => ({
                     ...prev,
-                    accountName: response.data.data.account_name,
-                    accountNumber: response.data.data.account_number,
+                    accountName: response?.data?.data?.account_name,
+                    accountNumber: response?.data?.data?.account_number,
                 }))
                 toast.success("Account details fetched successfully", {
                     id: notification
