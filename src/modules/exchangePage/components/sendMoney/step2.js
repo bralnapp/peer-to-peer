@@ -76,11 +76,11 @@ const StepTwo = ({ setFormData, formData, initialbankDetails }) => {
     }
 
     useEffect(() => {
-        if (formData.accountNumber.length === 10 && formData.bankName) {
+        if (formData?.accountNumber?.length === 10 && formData?.bankName) {
             fetchAccountDetails()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [formData.accountNumber, formData.bankCode])
+    }, [formData?.accountNumber, formData?.bankCode])
 
     useEffect(() => {
         if (
