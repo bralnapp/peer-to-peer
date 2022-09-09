@@ -3,11 +3,11 @@ import ExchangePage from 'src/modules/exchangePage';
 import LandingPage from 'src/modules/landingPage';
 
 const AppRouter = () => {
-  return (
+	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<LandingPage />} />
-        <Route path="/exchange" element={<ExchangePage />} />
+				<Route path="/exchange" element={<ExchangePage />} />
 			</Routes>
 		</BrowserRouter>
 	);
