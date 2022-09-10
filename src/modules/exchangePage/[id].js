@@ -84,10 +84,9 @@ const ExchangeTransactionPage = () => {
                                 title="release payment"
                                 className="w-full h-10 text-base leading-[18px]"
                             />
-                            <Button
-                                title="report"
-                                className="w-full h-10 text-base leading-[18px] bg-[#F5F5F5] text-[#1C144C]"
-                            />
+                            <button className='w-full h-10 text-base leading-[18px] bg-[#F5F5F5] text-[#1C144C] btn  disabled:bg-gray-700'>
+                                report
+                            </button>
                         </div>
                     </div>
 
