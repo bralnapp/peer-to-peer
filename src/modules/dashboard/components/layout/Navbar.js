@@ -38,7 +38,7 @@ export const Navbar = () => {
       <nav className="fixed z-[50] h-14 bg-white flex items-center w-full md:h-20">
         <div className="layout-container flex items-center justify-between">
           <div className="font-medium uppercase">Logo</div>
-          <div className="flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             <ul className='flex items-center space-x-8'>
               {
                 dashboardNavLinks.map((item, index) => (
