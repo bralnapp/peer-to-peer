@@ -7,7 +7,7 @@ import Button from "../components/Button"
 
 const ConnectWalletModal = ({ setShowConnectWalletModal, showConnectWalletModal }) => {
 
-    const { connectWallet, isWalletConnected } = useContractContext()
+    const { connectWallet } = useContractContext()
     const handleClose = () => setShowConnectWalletModal(false)
 
     const handleConnectWallet = () => {
