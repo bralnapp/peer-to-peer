@@ -1,4 +1,3 @@
-import { Link, useNavigate } from 'react-router-dom'
 import NoTransactionIcon from 'src/assests/noTransaction.png'
 import Status from 'src/modules/dashboard/components/status'
 import { recentTransctions } from 'src/utils/data'
