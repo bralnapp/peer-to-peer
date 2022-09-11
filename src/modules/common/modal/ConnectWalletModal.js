@@ -1,9 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react"
 import { Fragment } from "react"
 
-import ArrowLeft from 'src/assests/arrow-left.png'
 import { useContractContext } from "src/context/ContractContext"
 import Button from "../components/Button"
+
+import Coinbase from 'src/assests/coinbase.png'
+import ArrowLeft from 'src/assests/arrow-left.png'
 
 const ConnectWalletModal = ({ setShowConnectWalletModal, showConnectWalletModal }) => {
 
@@ -46,6 +48,10 @@ const ConnectWalletModal = ({ setShowConnectWalletModal, showConnectWalletModal 
                             <h1 className="capitalize text-xl leading-6 text-[#0B0B27] font-bold md:text-2xl md:leading-6">Connect EVM Wallet</h1>
                         </Dialog.Title>
                         <section className="my-6">
+                            <div className="flex space-x-2 mb-5 items-center">
+                                <img src={Coinbase} alt="" className="h-8 w-8" />
+                                <p className="font-bold text-sm text-[#475467]">Coinbase</p>
+                            </div>
                             <p className="mb-5 text-sm text-[#737374]">You'll need to install <strong>Coinbase</strong> wallet to continue. Once you have it installed, go ahead and refresh the page.</p>
                             <div className="flex items-center justify-between">
                                 <button onClick={handleClose} className="text-[#1C144C] font-medium text-base leading-[18px] md:text-xl">Back</button>
