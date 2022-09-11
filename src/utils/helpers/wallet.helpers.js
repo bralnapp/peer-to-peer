@@ -1,5 +1,5 @@
 const formatWalletAddress = (address) =>
-    `${address.slice(0, 6)}...${address.slice(38)}`;
+    `${address.substring(0, 5)}...${address.substring(address.length, address.length - 5)}`;
 
 
 export {

@@ -1,10 +1,10 @@
 export const dashboardNavLinks = [
     {
-        name: "home",
-        link: "/"
+        name: "send money",
+        link: "/exchange"
     },
     {
         name: "open orders",
-        link: "/"
+        link: "/orders"
     },
 ]

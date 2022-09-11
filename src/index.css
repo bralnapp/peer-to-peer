@@ -22,7 +22,7 @@
 		@apply bg-[rgba(242,155,79,0.1)] text-[#F29B4F];
 	}
 
-	.cancelled{
-	@apply bg-[rgba(235,87,87,0.1)] text-[#EB5757]
+	.cancelled {
+		@apply bg-[rgba(235,87,87,0.1)] text-[#EB5757];
 	}
 }

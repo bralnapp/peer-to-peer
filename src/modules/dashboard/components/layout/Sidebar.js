@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, toggleMenu, setIsOpen }) => {
                 <ul>
                     {dashboardNavLinks.map((item, index) => (
                         <li key={index} className="mb-[38px]">
-                            <a href={item.path} className="text-[#111111] text-base leading-[21px] capitalize">{item.name}</a>
+                            <a href={item.link} className="text-[#111111] text-base leading-[21px] capitalize">{item.name}</a>
                         </li>
                     ))}
                 </ul>
