@@ -1,17 +1,17 @@
 export const whyChooseUs = [
     {
         icon: '',
-        heading: "shop internationally",
-        description: "Fund your Klasha Wallet using your local African payment methods and currencies, get access to virtual dollar cards, shop for your favourite.",
+        heading: "decentralized",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis vitae ligula gravida mauris, lectus. Penatibus enim mattis sit a. ",
     },
     {
         icon: '',
-        heading: "shop internationally",
-        description: "Fund your Klasha Wallet using your local African payment methods and currencies, get access to virtual dollar cards, shop for your favourite.",
+        heading: "fast",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis vitae ligula gravida mauris, lectus. Penatibus enim mattis sit a. ",
     },
     {
         icon: '',
-        heading: "shop internationally",
-        description: "Fund your Klasha Wallet using your local African payment methods and currencies, get access to virtual dollar cards, shop for your favourite.",
+        heading: "Secure",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis vitae ligula gravida mauris, lectus. Penatibus enim mattis sit a. ",
     },
 ]
