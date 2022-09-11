@@ -5,8 +5,8 @@ const WhyChooseUs = () => {
     return (
         <section className='layout-container mb-20 lg:mb-[152px]'>
             <div className='text-center mb-10'>
-                <h1 className="capitalize font-medium mb-2 text-primary-2 text-xl md:text-4xl md:leading-[50px]">why choose us</h1>
-                <p className='text-[#626161] font-normal text-sm md:text-xl md:max-w-xl md:mx-auto'>Fund your Klasha Wallet using your local African payment methods and currencies, get access to virtual dollar cards, shop for your favourite.</p>
+                <h1 className="capitalize font-medium mb-2 text-primary-2 text-xl md:text-4xl md:leading-[50px]">Why people are choosing us</h1>
+                {/* <p className='text-[#626161] font-normal text-sm md:text-xl md:max-w-xl md:mx-auto'>Fund your Klasha Wallet using your local African payment methods and currencies, get access to virtual dollar cards, shop for your favourite.</p> */}
             </div>
             <div className='space-y-5 md:space-y-10 lg:space-y-0 lg:grid lg:grid-cols-3 gap-x-6'>
                 {
