@@ -10,7 +10,7 @@ const Button = ({ title, href, className, primary, secondary, isDisabled, ...pro
         <button
             type="submit"
             disabled={isDisabled}
-            className={`btn bg-[#5E44FF] text-white disabled:bg-gray-700 ${className}`}
+            className={`btn bg-[#5E44FF] text-white disabled:bg-gray-700 disabled:cursor-not-allowed ${className}`}
             {...props}
         >
             {title}
