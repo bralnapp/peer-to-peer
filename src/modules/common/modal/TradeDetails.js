@@ -1,13 +1,22 @@
 import { Dialog, Transition } from "@headlessui/react"
-import { Fragment } from "react"
+import { Fragment, useEffect, useState } from "react"
 import Button from "../components/Button"
 import CloseIcon from "src/assests/close.png"
+import { initRadenuTokenContract } from "src/utils/helpers/contract.helpers"
+import { useContractContext } from "src/context/ContractContext"
+import { RadenuContractAddress } from "src/utils/constants"
+import { convertToNumber, formatUnit, parseUnit } from "src/utils/helpers/format.helper"
+import toast from "react-hot-toast"
 
 const TradeDetails = ({ showTradeDetails, setShowTradeDetails, formData, setShowRiskNoticeOne }) => {
+  const { account, isLoading, setStore } = useContractContext()
+  const [allowanceBalance, setAllowanceBalance] = useState()
+  const [isApproving, setIsApproving] = useState(false)
+
   const tradeDetails = [
     {
       heading: "amount",
-      description: formData.amount
+      description: `$${formData.amount}`
     },
     {
       heading: "bank name",
@@ -35,6 +44,57 @@ const TradeDetails = ({ showTradeDetails, setShowTradeDetails, formData, setShow
     setShowTradeDetails(false)
     setShowRiskNoticeOne(true)
   }
+
+  const checkAllowance = async () => {
+    setStore(prev => ({
+      ...prev,
+      isLoading: true
+    }))
+    try {
+      const response = await initRadenuTokenContract()
+      const contract = response.contract
+      const allowance = await contract.allowance(account, RadenuContractAddress)
+      const balance = formatUnit(allowance)
+      setAllowanceBalance(balance)
+      setStore(prev => ({
+        ...prev,
+        isLoading: false,
+      }))
+    } catch (error) {
+      toast.error("Something went wrong")
+    }
+  }
+
+
+  const approveTransaction = async () => {
+    const approvalAmount = convertToNumber(formData.amount)
+    setIsApproving(true)
+    const notification = toast.loading('Approving transaction')
+    try {
+      const response = await initRadenuTokenContract()
+      const contract = response.contract
+      const txHash = await contract.approve(RadenuContractAddress, parseUnit(approvalAmount))
+      const receipt = await txHash.wait()
+      if (receipt) {
+        checkAllowance()
+        toast.success("Approval was successful", {
+          id: notification
+        })
+      }
+      setIsApproving(false)
+
+    } catch (error) {
+      toast.error("Something went wrong", {
+        id: notification
+      })
+    }
+  }
+
+  useEffect(() => {
+    checkAllowance()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
 
   return (
     <Transition
@@ -77,14 +137,33 @@ const TradeDetails = ({ showTradeDetails, setShowTradeDetails, formData, setShow
               }
 
             </section>
-            <div className="flex items-center space-x-[10px] justify-end md:space-x-[22px]">
-              <Button
-                type="button"
-                title="proceed with transactions"
-                className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
-                onClick={handleProceedTransactions}
-              />
-            </div>
+            {
+              isLoading ? <p className="text-center">Please wait...</p> :
+
+                <div className="space-y-[10px] md:space-y-[22px]">
+                  {
+                    allowanceBalance <= convertToNumber(formData.amount) &&
+                    <Button
+                      type="button"
+                      title={
+                        isApproving ?
+                          "Approving Transaction..."
+                          :
+                          "Approve Transaction"}
+                      className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
+                      onClick={approveTransaction}
+                      isDisabled={isApproving || (allowanceBalance >= convertToNumber(formData.amount))}
+                    />
+                  }
+                  <Button
+                    type="button"
+                    title="proceed with transactions"
+                    className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
+                    onClick={handleProceedTransactions}
+                    isDisabled={!(allowanceBalance >= convertToNumber(formData.amount))}
+                  />
+                </div>
+            }
           </div>
         </div>
       </Dialog>

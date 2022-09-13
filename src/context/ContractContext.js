@@ -84,6 +84,31 @@ const ContractContextProvider = ({ children }) => {
         }
     }
 
+
+    // const initRadenuContract = async () => {
+    //     try {
+    //         if (!ethereum) return "You must install Coinbase wallet address, a virtual Ethereum wallet, in your browser."
+    //         const provider = new ethers.providers.Web3Provider(window.ethereum);
+    //         const signer = provider.getSigner();
+    //         const _walletAddress = await signer.getAddress();
+
+    //         const _contract = new ethers.Contract(
+    //             contractAddress,
+    //             contractABI,
+    //             signer
+    //         );
+    //         return {
+    //             contract: _contract,
+    //             walletAddress: _walletAddress,
+    //         };
+    //     } catch (error) {
+    //         throw Error("Address is Null")
+    //     }
+    // }
+
+    // const initTokenContract
+
+
     useEffect(() => {
         checkIfWalletConnected()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,5 +126,5 @@ const useContractContext = () => useContext(ContractContext);
 
 export {
     ContractContextProvider,
-    useContractContext
+    useContractContext,
 }
