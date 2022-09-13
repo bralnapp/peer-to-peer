@@ -1,15 +1,40 @@
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import NoTransactionIcon from 'src/assests/noTransaction.png'
+import { useContractContext } from 'src/context/ContractContext';
 import Status from 'src/modules/dashboard/components/status'
-import { recentTransctions } from 'src/utils/data'
+import { orderState } from 'src/utils/constants';
+import { initRadenuContract } from 'src/utils/helpers/contract.helpers';
+import { formatDate, formatUnit } from 'src/utils/helpers/format.helper';
 
 const RecentTransactions = () => {
+    const [orderList, setOrderList] = useState([])
+    const { account } = useContractContext()
     const navigate = useNavigate();
     const handleNavigation = (to, data) => {
         navigate(to, {
             state: data
         })
     }
+    const getOrders = async () => {
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const totalOrder = await contract.getTotalOrder()
+            setOrderList(totalOrder)
+        } catch (error) {
+            toast.error('Something went wrong')
+            console.log({ error })
+        }
+    }
+
+    const recentTransactions = orderList.filter((item) => item.sender.toLowerCase() === account.toLowerCase())
+
+    useEffect(() => {
+        getOrders()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [account]);
     return (
         <div className="bg-white mt-5 rounded-2xl p-6 h-[360px]">
             <h3 className="capitalize font-medium md:text-xl text-[#192839]">recent transactions</h3>
@@ -37,13 +62,13 @@ const RecentTransactions = () => {
                         {/* Table body */}
                         <div className="h-[215px] text-[#1C144C] overflow-auto">
                             {
-                                recentTransctions.map((item, index) => (
+                                recentTransactions?.map((item, index) => (
                                     <div onClick={() => handleNavigation(`/exchange/${item.sender}`, item)} key={index} className="grid grid-cols-4 items-center py-[10px] w-full border-b border-[#F0F0F0] text-[#5B616E] text-sm cursor-pointer leading-[18px]">
-                                        <div>{item.transferTo}</div>
-                                        <div className='lg:text-center'>{item.amount}</div>
-                                        <div>{item.date}</div>
+                                        <div>{item.accountName}</div>
+                                        <div className='lg:text-center'>{`$${formatUnit(item.amount)}`}</div>
+                                        <div>{formatDate(item?.timeInitiated)}</div>
                                         <div className="lg:mx-auto">
-                                            <Status status={item.status} />
+                                            <Status status={orderState[item.state]} />
                                         </div>
                                     </div>
                                 ))
