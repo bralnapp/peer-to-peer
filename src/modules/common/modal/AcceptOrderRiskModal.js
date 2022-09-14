@@ -26,18 +26,18 @@ const AcceptOrderRiskModal = ({ showRiskModal, setShowRiskModal, transferData })
       if (isTermsAccepted) {
         const response = await initRadenuContract()
         const contract = response.contract
-        const trxHash = await contract.acceptOrder(formatUnit(transferData.orderId) * (10 ** 18))
+        const trxHash = await contract.acceptOrder(Math.round(formatUnit(transferData.orderId) * (10 ** 18)))
         const reciept = await trxHash.wait()
         if (reciept) {
           toast.success('You have accepted the order', {
             id: notification
           })
           setIsAcceptingOrder(false)
-          handleNavigation(`/orders/${formatUnit(transferData.orderId) * (10 ** 18)}`)
+          handleNavigation(`/orders/${Math.round((formatUnit(transferData.orderId) * (10 ** 18)) - 1)}`)
         }
       }
     } catch (error) {
-      console.log({error})
+      console.log({ error })
       setIsAcceptingOrder(false)
       toast.error(error?.message, {
         id: notification

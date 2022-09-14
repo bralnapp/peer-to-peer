@@ -6,7 +6,6 @@ import { formatUnit } from 'src/utils/helpers/format.helper'
 import { formatWalletAddress } from 'src/utils/helpers/wallet.helpers'
 import Button from '../common/components/Button'
 import AcceptOrderRiskModal from '../common/modal/AcceptOrderRiskModal'
-import ExchangerDetails from '../dashboard/components/exchangerDetails'
 import DashboadLayout from '../dashboard/components/layout'
 
 const OrderPage = () => {

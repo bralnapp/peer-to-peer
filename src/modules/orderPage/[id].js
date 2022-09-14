@@ -13,16 +13,15 @@ import { initRadenuContract } from "src/utils/helpers/contract.helpers";
 import ExchangerDetails from "../dashboard/components/exchangerDetails";
 
 const OrderTransactionPage = () => {
-    const { id } = useParams()
+    const { id: orderId } = useParams()
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [orderData, setOrderData] = useState([])
-    console.log(orderData)
 
     const getOrderById = async () => {
         try {
             const response = await initRadenuContract()
             const contract = response.contract
-            const data = await contract.order(id)
+            const data = await contract.order(Number(orderId))
             setOrderData(data)
         } catch (error) {
             console.log({ error })
@@ -44,7 +43,7 @@ const OrderTransactionPage = () => {
         <DashboadLayout>
             <>
                 <ConfirmTransferModal
-                    orderId={id}
+                    orderId={orderId}
                     showConfirmModal={showConfirmModal}
                     setShowConfirmModal={setShowConfirmModal}
                     setOrderData={setOrderData}
@@ -100,23 +99,17 @@ const OrderTransactionPage = () => {
                                 </div>
                             </div> : null
                             }
-                            {/* {
-                                transactionDetails.map((item, index) => (
-                                    <div key={index} className="flex items-center capitalize text-sm justify-between">
-                                        <p className="text-[#5B616E]">{item?.name}</p>
-                                        {
-                                            item?.name?.toLowerCase() === 'status' ? <Status status={item?.value} /> : <p className="text-[#1C144C]">{item?.value}</p>
-                                        }
-                                    </div>
-                                ))
-                            } */}
+
                         </div>
                         <div className="space-y-4">
-                            <Button
-                                onClick={handleReleasePayment}
-                                title="confirm payment completion"
-                                className="w-full h-10 text-sm md:text-base md:leading-[18px]"
-                            />
+                            {orderData?.state > 2 ? null :
+                                <Button
+                                    onClick={handleReleasePayment}
+                                    title={orderState[orderData?.state]?.toLowerCase() === "completed" ? "you've confirmed your payment" : "confirm payment completion"}
+                                    className="w-full h-10 text-sm md:text-base md:leading-[18px]"
+                                    isDisabled={orderState[orderData?.state]?.toLowerCase() === "completed"}
+                                />
+                            }
                         </div>
                     </div>
 

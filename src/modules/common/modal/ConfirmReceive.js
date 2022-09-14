@@ -13,14 +13,12 @@ const ConfirmReceive = ({ showConfirmModal, orderId, setShowConfirmModal, setOrd
         try {
             const response = await initRadenuContract()
             const contract = response.contract
-            const data = await contract.order(orderId)
+            const data = await contract.order(Number(orderId))
             setOrderData(data)
         } catch (error) {
             console.log({ error })
         }
     }
-
-    console.log(orderId)
 
     const handleConfirm = async () => {
         setIsConfirming(true)
@@ -28,7 +26,7 @@ const ConfirmReceive = ({ showConfirmModal, orderId, setShowConfirmModal, setOrd
         try {
             const response = await initRadenuContract()
             const contract = response.contract
-            const trxHash = await contract.releasePayment(Number(orderId))
+            const trxHash = await contract.releasePayment(Number(orderId) + 1)
             const receipt = await trxHash.wait()
             if (receipt) {
                 getOrderById()
@@ -91,13 +89,6 @@ const ConfirmReceive = ({ showConfirmModal, orderId, setShowConfirmModal, setOrd
                             <Button
                                 type="button"
                                 title={isConfirming ? 'transction in progress...' : "Approve"}
-                                className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
-                                onClick={handleConfirm}
-                                isDisabled={isConfirming}
-                            />
-                            <Button
-                                type="button"
-                                title={isConfirming ? 'transction in progress...' : "Yes, Continue"}
                                 className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
                                 onClick={handleConfirm}
                                 isDisabled={isConfirming}

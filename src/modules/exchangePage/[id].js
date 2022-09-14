@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { orderState } from 'src/utils/constants';
 import { initRadenuContract } from 'src/utils/helpers/contract.helpers';
@@ -11,24 +12,39 @@ import DashboadLayout from '../dashboard/components/layout'
 import Status from '../dashboard/components/status';
 
 const ExchangeTransactionPage = () => {
-    const { id } = useParams()
+    const { id: orderId } = useParams()
 
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-
-    console.log(typeof Number(id))
-
     const [orderData, setOrderData] = useState([])
 
     const getOrderById = async () => {
-        console.log('getOrder', id)
         try {
             const response = await initRadenuContract()
             const contract = response.contract
-            const data = await contract.order(Number(id))
-            console.log(data)
+            const data = await contract.order(Number(orderId))
             setOrderData(data)
         } catch (error) {
             console.log({ error })
+        }
+    }
+
+    const handleReport = async () => {
+        const notification = toast.loading('Opening a dispute')
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const trxHash = await contract.openDispute(Number(orderId) + 1)
+            const reciept = await trxHash.wait()
+            if (reciept) {
+                getOrderById()
+                toast.success('Dispute has been opened', {
+                    id: notification
+                })
+            }
+        } catch (error) {
+            toast.error('Something went wrong', {
+                id: notification
+            })
         }
     }
 
@@ -51,7 +67,8 @@ const ExchangeTransactionPage = () => {
                 <ConfirmReceive
                     showConfirmModal={showConfirmModal}
                     setShowConfirmModal={setShowConfirmModal}
-                    orderId={id}
+                    orderId={orderId}
+                    setOrderData={setOrderData}
                 />
                 <div className="layout-container md:grid md:grid-cols-2 md:gap-x-8">
                     <div className="bg-white p-6">
@@ -96,16 +113,27 @@ const ExchangeTransactionPage = () => {
                         }
                         <div className="space-y-4">
                             <Button
+                                isDisabled={orderState[orderData?.state]?.toLowerCase() === "fufilled" || orderState[orderData?.state]?.toLowerCase() === "indispute"}
                                 onClick={handleReleasePayment}
-                                title="release payment"
+                                title={orderState[orderData?.state]?.toLowerCase() === "fufilled" ? "Payment has been released" : orderState[orderData?.state]?.toLowerCase() === "indispute" ? "Indispute" : "release payment"}
                                 className="w-full h-10 text-base leading-[18px]"
                             />
-                            <button className='w-full h-10 text-base leading-[18px] bg-[#F5F5F5] text-[#1C144C] btn  disabled:bg-gray-700'>
-                                report
-                            </button>
+                            {
+                                orderState[orderData?.state]?.toLowerCase() === "indispute" ?
+                                    null :
+                                    <button
+                                        onClick={handleReport}
+                                        className='w-full h-10 text-base leading-[18px] bg-[#F5F5F5] text-[#1C144C] btn  disabled:bg-gray-700 disabled:text-white'>
+                                        Report
+                                    </button>
+                            }
+
                         </div>
                     </div>
-                    <ExchangerDetails address={orderData?.receiver} />
+                    <ExchangerDetails
+                        transactionState={orderData?.state}
+                        address={orderData?.receiver}
+                    />
                 </div>
             </>
         </DashboadLayout >

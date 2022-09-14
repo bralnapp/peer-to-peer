@@ -11,9 +11,9 @@ import toast from "react-hot-toast"
 import { useContractContext } from "src/context/ContractContext"
 
 
-const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, formData, setFormData, setBalance }) => {
+const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, formData, setFormData, setBalance, setOrderList }) => {
 
-    const {account} = useContractContext()
+    const { account } = useContractContext()
     const [isCreatingOrder, setIsCreatingOrder] = useState(false)
 
     const handleCheckbox = () => {
@@ -21,6 +21,18 @@ const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, formData, setF
             ...prev,
             isTermsAccepted: !formData.isTermsAccepted,
         }))
+    }
+
+    const getOrders = async () => {
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const totalOrder = await contract.getTotalOrder()
+            setOrderList(totalOrder)
+        } catch (error) {
+            toast.error('Something went wrong')
+            console.log({ error })
+        }
     }
 
     const getUserBalance = async () => {
@@ -47,6 +59,7 @@ const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, formData, setF
             const receipt = await txHash.wait()
             if (receipt) {
                 getUserBalance()
+                getOrders()
                 setShowRiskNoticeOne(false)
                 setIsCreatingOrder(false)
                 setFormData({})

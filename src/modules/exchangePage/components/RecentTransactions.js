@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import NoTransactionIcon from 'src/assests/noTransaction.png'
@@ -8,8 +8,7 @@ import { orderState } from 'src/utils/constants';
 import { initRadenuContract } from 'src/utils/helpers/contract.helpers';
 import { formatDate, formatUnit } from 'src/utils/helpers/format.helper';
 
-const RecentTransactions = () => {
-    const [orderList, setOrderList] = useState([])
+const RecentTransactions = ({ orderList, setOrderList }) => {
     const { account } = useContractContext()
     const navigate = useNavigate();
     const handleNavigation = (to) => navigate(to)
@@ -26,18 +25,11 @@ const RecentTransactions = () => {
     }
 
     const handleSeeTransaction = (orderId) => {
-        const _id = formatUnit(orderId) * (10 ** 18)
+        const _id = Math.round((formatUnit(orderId) * (10 ** 18)) - 1)
         handleNavigation(`/exchange/${_id}`)
     }
 
     const recentTransactions = orderList.filter((item) => item.sender.toLowerCase() === account.toLowerCase())
-    console.log(orderList)
-    console.log(formatUnit(
-        {
-            "type": "BigNumber",
-            "hex": "0x15"
-        }
-    ))
 
     useEffect(() => {
         getOrders()

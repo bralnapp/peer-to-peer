@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 import TradeDetails from 'src/modules/common/modal/TradeDetails'
 import RiskNoticeOne from 'src/modules/common/modal/RiskNoticeOne'
 
-const StepTwo = ({ setFormData, formData, initialbankDetails, setBalance }) => {
+const StepTwo = ({ setFormData, formData, initialbankDetails, setBalance, setOrderList }) => {
     const [isValid, setIsValid] = useState(false)
     const [showTradeDetails, setShowTradeDetails] = useState(false)
     const [showRiskNoticeOne, setShowRiskNoticeOne] = useState(false);
@@ -112,6 +112,7 @@ const StepTwo = ({ setFormData, formData, initialbankDetails, setBalance }) => {
                         formData={formData}
                         setFormData={setFormData}
                         setBalance={setBalance}
+                        setOrderList={setOrderList}
 
                     />
                 )

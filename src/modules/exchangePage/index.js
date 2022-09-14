@@ -6,6 +6,7 @@ import UserBalance from './components/UserBalance';
 
 const ExchangePage = () => {
     const [balance, setBalance] = useState()
+    const [orderList, setOrderList] = useState([])
 
     return (
         <DashboadLayout>
@@ -15,11 +16,15 @@ const ExchangePage = () => {
                         balance={balance}
                         setBalance={setBalance}
                     />
-                    <RecentTransactions />
+                    <RecentTransactions
+                        orderList={orderList}
+                        setOrderList={setOrderList}
+                    />
                 </div>
                 <div>
                     <SendMoney
                         setBalance={setBalance}
+                        setOrderList={setOrderList}
                     />
                 </div>
             </div>

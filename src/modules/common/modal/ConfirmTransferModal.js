@@ -10,12 +10,11 @@ import RiskIcon from "src/assests/risk-icon.png"
 
 const ConfirmTransferModal = ({ showConfirmModal, orderId, setShowConfirmModal, setOrderData }) => {
     const [isConfirming, setIsConfirming] = useState(false)
-
     const getOrderById = async () => {
         try {
             const response = await initRadenuContract()
             const contract = response.contract
-            const data = await contract.order(orderId)
+            const data = await contract.order(Number(orderId))
             setOrderData(data)
         } catch (error) {
             console.log({ error })
@@ -28,7 +27,7 @@ const ConfirmTransferModal = ({ showConfirmModal, orderId, setShowConfirmModal, 
         try {
             const response = await initRadenuContract()
             const contract = response.contract
-            const trxHash = await contract.completeOrder(orderId)
+            const trxHash = await contract.completeOrder(Number(orderId) + 1)
             const receipt = await trxHash.wait()
             if (receipt) {
                 getOrderById()
