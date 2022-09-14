@@ -1,7 +1,7 @@
 
-const Status = ({status}) => {
+const Status = ({ status }) => {
   return (
-    <div className={`flex items-center justify-center w-[70px] text-xs h-7 rounded-lg capitalize ${(status.toLowerCase()  === 'complete') || (status.toLowerCase()  === 'accepted') ? 'complete' : status.toLowerCase() === 'pending' ? 'pending' : 'cancelled' } `}>{status}</div>
+    <div className={`flex items-center justify-center w-[70px] text-xs h-7 rounded-lg capitalize ${status.toLowerCase() === 'initiated' ? 'initiated' : status.toLowerCase() === 'accepted' ? 'accepted' : status.toLowerCase() === 'completed' ? 'completed' : status.toLowerCase() === 'fulfilled' ? 'fulfilled' : status.toLowerCase() === "cancelled" ? "cancelled" : "dispute"} `}>{status}</div>
   )
 }
 

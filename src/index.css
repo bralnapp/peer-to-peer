@@ -14,15 +14,27 @@
 		@apply border border-red-500;
 	}
 
-	.complete {
+	.initiated {
+		@apply text-[#2952CC] bg-[#D6E0FF];
+	}
+
+	.accepted {
+		@apply bg-[#edeff5] text-[#474d66];
+	}
+
+	.completed {
 		@apply bg-[rgba(32,150,83,0.1)] text-[#209653];
 	}
 
-	.pending {
-		@apply bg-[rgba(242,155,79,0.1)] text-[#F29B4F];
+	.fulfilled {
+		@apply bg-[#DCF2EA] text-[#317159];
 	}
 
 	.cancelled {
 		@apply bg-[rgba(235,87,87,0.1)] text-[#EB5757];
+	}
+
+	.dispute {
+		@apply text-[#66460D] bg-[#FFEFD2];
 	}
 }

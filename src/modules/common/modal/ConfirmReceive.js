@@ -1,14 +1,13 @@
-import { Fragment, useState } from "react"
-import { Dialog, Transition } from "@headlessui/react"
-import Button from "../components/Button"
-import { initRadenuContract } from "src/utils/helpers/contract.helpers"
-import toast from "react-hot-toast"
+import { Dialog, Transition } from '@headlessui/react'
+import React, { Fragment, useState } from 'react'
+import Button from '../components/Button'
 
-// images
 import CloseIcon from "src/assests/close.png"
 import RiskIcon from "src/assests/risk-icon.png"
+import { initRadenuContract } from 'src/utils/helpers/contract.helpers'
+import toast from 'react-hot-toast'
 
-const ConfirmTransferModal = ({ showConfirmModal, orderId, setShowConfirmModal, setOrderData }) => {
+const ConfirmReceive = ({ showConfirmModal, orderId, setShowConfirmModal, setOrderData }) => {
     const [isConfirming, setIsConfirming] = useState(false)
     const getOrderById = async () => {
         try {
@@ -27,22 +26,26 @@ const ConfirmTransferModal = ({ showConfirmModal, orderId, setShowConfirmModal, 
         try {
             const response = await initRadenuContract()
             const contract = response.contract
-            const trxHash = await contract.completeOrder(Number(orderId) + 1)
+            const trxHash = await contract.releasePayment(Number(orderId) + 1)
             const receipt = await trxHash.wait()
             if (receipt) {
                 getOrderById()
                 setIsConfirming(false)
-                toast.success("Payment has been confirmed", {
+                toast.success("Payment has been released", {
                     id: notification
                 })
                 setShowConfirmModal(false)
             }
         } catch (error) {
+            console.log({ error })
+            setIsConfirming(false)
+            setShowConfirmModal(false)
             toast.error("Something went wrong", {
                 id: notification
             })
         }
     }
+
     return (
         <Transition
             appear
@@ -78,14 +81,14 @@ const ConfirmTransferModal = ({ showConfirmModal, orderId, setShowConfirmModal, 
                                 <h3 className="capitalize mt-4 text-center text-xl leading-6 text-black font-bold md:text-2xl md:leading-6">risk notice</h3>
                             </div>
                             <div className="my-4">
-                                <p className="text-[#737374] text-center text-sm md:text-base">Clicking on Complete means you have done the transaction. Do you want to continue</p>
+                                <p className="text-[#737374] text-center text-sm md:text-base">Clicking on confirm success means your receipient have received the funds. Do you want to continue</p>
                             </div>
 
                         </section>
                         <div className="flex items-center space-x-[10px] justify-end md:space-x-[22px]">
                             <Button
                                 type="button"
-                                title={isConfirming ? 'transction in progress...' : "Yes, Continue"}
+                                title={isConfirming ? 'transction in progress...' : "Approve"}
                                 className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
                                 onClick={handleConfirm}
                                 isDisabled={isConfirming}
@@ -94,8 +97,7 @@ const ConfirmTransferModal = ({ showConfirmModal, orderId, setShowConfirmModal, 
                     </div>
                 </div>
             </Dialog>
-        </Transition>
-    )
+        </Transition>)
 }
 
-export default ConfirmTransferModal
+export default ConfirmReceive

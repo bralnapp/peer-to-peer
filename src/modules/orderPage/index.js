@@ -15,7 +15,8 @@ const OrderPage = () => {
     const [showRiskModal, setShowRiskModal] = useState(false)
     const [transferData, setTransferData] = useState();
     const [orderList, setOrderList] = useState([])
-
+    // you can't see your order in list of orders
+    const filterOrderList = orderList.filter((item) => item.sender.toLowerCase() !== account.toLowerCase() && item.state === 0)
 
     const handleShowRiskModal = (item) => {
         setShowRiskModal(true)
@@ -66,7 +67,7 @@ const OrderPage = () => {
                             {/* table body */}
                             <div className="h-[400px] overflow-y-auto">
                                 {
-                                    orderList.map((item, index) => (
+                                    filterOrderList?.map((item, index) => (
                                         <div key={index} className="grid grid-cols-5 text-[#323131] capitalize text-xs md:text-base md:leading-[18px] py-[15px] border-b border-[#F0F0F0] lg:w-full items-center">
                                             <div className='text-[#2F2280] text-xs md:text-base w-[90%] overflow-hidden text-clip text-ellipsis">'>{formatWalletAddress(item.sender)}</div>
                                             <div className='text-center md:text-left'>${formatUnit(item?.amount)}</div>
@@ -84,6 +85,7 @@ const OrderPage = () => {
                         </div>
 
                     </div>
+
                 </div>
             </>
         </DashboadLayout>

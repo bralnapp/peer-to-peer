@@ -6,21 +6,44 @@ import Button from "../components/Button"
 import CloseIcon from 'src/assests/close.png'
 import RiskIcon from 'src/assests/risk-icon.png'
 import { useNavigate } from "react-router-dom"
+import { initRadenuContract } from "src/utils/helpers/contract.helpers"
+import { formatUnit } from "src/utils/helpers/format.helper"
+import toast from "react-hot-toast"
 
 const AcceptOrderRiskModal = ({ showRiskModal, setShowRiskModal, transferData }) => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false)
+  const [isAcceptingOrder, setIsAcceptingOrder] = useState(false)
   const navigate = useNavigate();
 
   const handleCheckbox = () => setIsTermsAccepted(!isTermsAccepted)
 
-  const handleNavigation = (to, data) => {
-    navigate(to, {
-      state: data
-    })
-  }
+  // console.log("data", transferData)
+  const handleNavigation = (to) => navigate(to)
+  const handleConfirm = async () => {
+    setIsAcceptingOrder(true)
+    const notification = toast.loading("Processing request...")
+    try {
+      if (isTermsAccepted) {
+        const response = await initRadenuContract()
+        const contract = response.contract
+        const trxHash = await contract.acceptOrder(Math.round(formatUnit(transferData.orderId) * (10 ** 18)))
+        const reciept = await trxHash.wait()
+        if (reciept) {
+          toast.success('You have accepted the order', {
+            id: notification
+          })
+          setIsAcceptingOrder(false)
+          handleNavigation(`/orders/${Math.round((formatUnit(transferData.orderId) * (10 ** 18)) - 1)}`)
+        }
+      }
+    } catch (error) {
+      console.log({ error })
+      setIsAcceptingOrder(false)
+      toast.error(error?.message, {
+        id: notification
+      })
+    }
 
-  const handleConfirm = () => {
-    if (isTermsAccepted) handleNavigation(`/orders/${transferData?.sender}`, transferData)
   }
 
   return (
@@ -72,13 +95,23 @@ const AcceptOrderRiskModal = ({ showRiskModal, setShowRiskModal, transferData })
               </div>
             </section>
             <div className="flex items-center space-x-[10px] justify-end md:space-x-[22px]">
-              <Button
-                type="button"
-                title="Yes, Continue"
-                isDisabled={!isTermsAccepted}
-                onClick={handleConfirm}
-                className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
-              />
+              {
+                isAcceptingOrder ?
+                  <Button
+                    type="button"
+                    title="processing request"
+                    isDisabled={isAcceptingOrder}
+                    onClick={handleConfirm}
+                    className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
+                  /> :
+                  <Button
+                    type="button"
+                    title="Yes, Continue"
+                    isDisabled={!isTermsAccepted}
+                    onClick={handleConfirm}
+                    className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
+                  />
+              }
             </div>
           </div>
         </div>
