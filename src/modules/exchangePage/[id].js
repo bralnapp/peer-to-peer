@@ -112,21 +112,30 @@ const ExchangeTransactionPage = () => {
                         </div> : null
                         }
                         <div className="space-y-4">
-                            <Button
-                                isDisabled={orderState[orderData?.state]?.toLowerCase() === "fufilled" || orderState[orderData?.state]?.toLowerCase() === "indispute"}
-                                onClick={handleReleasePayment}
-                                title={orderState[orderData?.state]?.toLowerCase() === "fufilled" ? "Payment has been released" : orderState[orderData?.state]?.toLowerCase() === "indispute" ? "Indispute" : "release payment"}
-                                className="w-full h-10 text-base leading-[18px]"
-                            />
                             {
-                                orderState[orderData?.state]?.toLowerCase() === "indispute" ?
-                                    null :
-                                    <button
-                                        onClick={handleReport}
-                                        className='w-full h-10 text-base leading-[18px] bg-[#F5F5F5] text-[#1C144C] btn  disabled:bg-gray-700 disabled:text-white'>
-                                        Report
-                                    </button>
+                                !(orderData?.state <= 1) ?
+                                    <>
+                                        <Button
+                                            isDisabled={orderState[orderData?.state]?.toLowerCase() === "fufilled" || orderState[orderData?.state]?.toLowerCase() === "indispute"}
+                                            onClick={handleReleasePayment}
+                                            title={orderState[orderData?.state]?.toLowerCase() === "fufilled" ? "Payment has been released" : orderState[orderData?.state]?.toLowerCase() === "indispute" ? "Indispute" : "release payment"}
+                                            className="w-full h-10 text-base leading-[18px]"
+                                        />
+
+                                        {
+                                            orderState[orderData?.state]?.toLowerCase() === "indispute" ?
+                                                null :
+                                                <button
+                                                    onClick={handleReport}
+                                                    className='w-full h-10 text-base leading-[18px] bg-[#F5F5F5] text-[#1C144C] btn  disabled:bg-gray-700 disabled:text-white'>
+                                                    Report
+                                                </button>
+                                        }
+                                    </> :
+                                    <p className='text-center'>Waiting for someone to complete your order</p>
+
                             }
+
 
                         </div>
                     </div>
