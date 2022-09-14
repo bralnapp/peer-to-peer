@@ -3,7 +3,7 @@ import StepOne from "./step1";
 import StepTwo from "./step2";
 
 
-const SendMoney = () => {
+const SendMoney = ({ setBalance }) => {
 
     const initialbankDetails = {
         amount: '',
@@ -20,6 +20,7 @@ const SendMoney = () => {
             setFormData={setFormData}
         /> :
         <StepTwo
+            setBalance={setBalance}
             setFormData={setFormData}
             formData={formData}
             initialbankDetails={initialbankDetails}

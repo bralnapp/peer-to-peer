@@ -4,14 +4,16 @@ import Button from "../components/Button"
 import CloseIcon from "src/assests/close.png"
 import RiskIcon from "src/assests/risk-icon.png"
 import CheckBox from "../components/checkbox"
-import { initRadenuContract } from "src/utils/helpers/contract.helpers"
-import { convertToNumber, parseUnit } from "src/utils/helpers/format.helper"
+import { initRadenuContract, initRadenuTokenContract } from "src/utils/helpers/contract.helpers"
+import { convertToNumber, formatUnit, parseUnit } from "src/utils/helpers/format.helper"
 import { exchangeRate } from "src/utils/constants"
 import toast from "react-hot-toast"
+import { useContractContext } from "src/context/ContractContext"
 
 
-const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, formData, setFormData }) => {
+const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, formData, setFormData, setBalance }) => {
 
+    const {account} = useContractContext()
     const [isCreatingOrder, setIsCreatingOrder] = useState(false)
 
     const handleCheckbox = () => {
@@ -21,6 +23,12 @@ const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, formData, setF
         }))
     }
 
+    const getUserBalance = async () => {
+        const response = await initRadenuTokenContract()
+        const contract = response.contract
+        const accountBalance = await contract.balanceOf(account)
+        setBalance(formatUnit(accountBalance))
+    }
 
     const handleCreateOrder = async () => {
         const notification = toast.loading('Please wait...Transaction in process')
@@ -38,8 +46,10 @@ const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, formData, setF
             )
             const receipt = await txHash.wait()
             if (receipt) {
+                getUserBalance()
                 setShowRiskNoticeOne(false)
                 setIsCreatingOrder(false)
+                setFormData({})
                 toast.success("Order has been made", {
                     id: notification
                 })
