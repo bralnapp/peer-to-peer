@@ -113,7 +113,11 @@ const OrderTransactionPage = () => {
                         </div>
                     </div>
 
-                    <ExchangerDetails address={orderData?.sender} />
+                    <ExchangerDetails
+                        transactionState={orderData?.state}
+                        address={orderData?.sender}
+                        sender={orderData?.sender}
+                    />
                 </div>
             </>
         </DashboadLayout>

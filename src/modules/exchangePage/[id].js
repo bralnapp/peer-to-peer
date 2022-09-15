@@ -142,6 +142,7 @@ const ExchangeTransactionPage = () => {
                     <ExchangerDetails
                         transactionState={orderData?.state}
                         address={orderData?.receiver}
+                        sender={orderData?.sender}
                     />
                 </div>
             </>
