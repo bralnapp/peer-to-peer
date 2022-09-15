@@ -32,7 +32,7 @@ const RecentTransactions = ({ orderList, setOrderList }) => {
         handleNavigation(`/exchange/${_id}`)
     }
 
-    const recentTransactionsAll = orderList.filter((item) => item?.sender.toLowerCase() === account.toLowerCase() || item?.receiver?.toLowerCase() === account.toLowerCase())
+    const recentTransactionsAll = orderList.filter((item) => item?.sender.toLowerCase() === account.toLowerCase() || item?.receiver?.toLowerCase() === account.toLowerCase()).reverse()
     const transactionCategery = (state) => {
         if (state === 0) return recentTransactionsAll
         return recentTransactionsAll?.filter(item => item?.state === state - 1)

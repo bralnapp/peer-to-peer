@@ -17,7 +17,7 @@ const OrderPage = () => {
     const [orderList, setOrderList] = useState([])
     // you can't see your order in list of orders
     // const filterOrderList = orderList.filter((item) => item.sender.toLowerCase() !== account.toLowerCase() && item.state === 0)
-    const filterOrderList = orderList?.filter((item) => item?.state === 0)
+    const filterOrderList = orderList?.filter((item) => item?.state === 0).reverse()
 
     const handleShowRiskModal = (item) => {
         setShowRiskModal(true)
