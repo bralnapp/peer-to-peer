@@ -12,7 +12,9 @@ const WhyChooseUs = () => {
                 {
                     whyChooseUs.map((item,index)=> (
                         <div key={index} className="text-center lg:text-left bg-white py-10 lg:py-6 pl-4 pr-[19px] rounded-lg">
-                            <div className="bg-[#D9D9D9] h-10 w-10 mx-auto mb-4 md:w-20 md:h-20 lg:mx-0"></div>
+                            <div className="h-10 w-10 mx-auto mb-4 md:w-20 md:h-20 lg:mx-0">
+                                <img src={item.icon} alt="" />
+                            </div>
                             <h4 className='font-medium capitalize text-primary-2 text-sm mb-2 md:text-3xl  lg:text-lg'>{item.heading}</h4>
                             <p className='text-xs text-[#626161] max-w-xs mx-auto md:text-xl md:max-w-xl lg:text-base lg:leading-[22px]'>{item.description}</p>
                         </div>

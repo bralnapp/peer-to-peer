@@ -1,5 +1,9 @@
 import { howItWorks } from "src/utils/data"
 
+// images
+import ImageThree from 'src/assests/img3.png'
+
+
 const HowItWorks = () => {
     return (
         <section className="layout-container lg:grid lg:grid-cols-2 lg:items-center lg:gap-x-[90px] xl:gap-x-[200px] lg:mb-[128px]">
@@ -15,7 +19,9 @@ const HowItWorks = () => {
                 </div>
             </div>
 
-            <div className='bg-[#D9D9D9] w-full h-[200px] my-10 md:h-[280px] md:my-12 lg:h-[405px] lg:my-0' />
+            <div className='w-full h-[200px] my-10 md:h-[280px] md:my-12 lg:h-[405px] lg:my-0'>
+                <img src={ImageThree} alt="" />
+            </div>
         </section>
     )
 }

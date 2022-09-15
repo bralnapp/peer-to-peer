@@ -1,8 +1,11 @@
-import React from 'react'
 import Button from '../common/components/Button'
 import HowItWorks from './components/HowItWorks'
 import Layout from './components/layout'
 import WhyChooseUs from './components/WhyChooseUs'
+
+// images
+import ImageOne from 'src/assests/img1.png'
+import ImageTwo from 'src/assests/img2.png'
 
 const LandingPage = () => {
     return (
@@ -13,11 +16,15 @@ const LandingPage = () => {
                     <p className='text-[#4B4B4B] text-sm md:text-2xl lg:text-xl'>Send money online to Nigeria from the anywhere,Enjoy free local and cross-border transfers, easily track all payments,</p>
                     <Button href="/exchange" title="get started" primary className="mx-auto w-32 h-10 mt-[18px] md:w-[192px] md:h-12 lg:mx-0" />
                 </div>
-                <div className='bg-[#D9D9D9] w-full h-[200px] my-10 md:h-[280px] md:my-12 lg:h-[405px] lg:my-0' />
+                <div className='w-full h-[200px] my-10 md:h-[280px] md:my-12 lg:h-[405px] lg:my-0'>
+                    <img src={ImageOne} alt="" />
+                </div>
             </section>
 
             <section className='layout-container flex flex-col lg:flex-none lg:grid lg:grid-cols-2 lg:gap-x-[88px]  lg:items-center md:mb-20 lg:mb-[92px]'>
-                <div className='bg-[#D9D9D9] order-2  w-full h-[200px] my-10 md:h-[280px] md:my-12 lg:h-[405px] lg:my-0 lg:-order-1'/>
+                <div className='order-2  w-full h-[200px] my-10 md:h-[280px] md:my-12 lg:h-[405px] lg:my-0 lg:-order-1'>
+                    <img src={ImageTwo} alt="" />
+                </div>
                 <div className='text-center lg:text-left'>
                     <h2 className='text-primary-2 font-medium text-2xl mb-2 md:text-[52px] md:leading-[72px] lg:mb-4 lg:text-4xl xl:text-5xl lg:w-11/12'>Enjoy free transfer and low cross-border rates</h2>
                     <p className='text-[#4B4B4B] text-sm md:text-2xl lg:text-xl'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Felis vitae ligula gravida mauris, lectus. Penatibus enim mattis sit a. Maecenas interdum at id etiam est tempus. Nisi, pellentesque aenean justo cras tempus. Mauris in nec integer elementum sit. Massa faucibus sed ligula facilisi. </p>
