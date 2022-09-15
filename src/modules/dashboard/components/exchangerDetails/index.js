@@ -26,7 +26,6 @@ const messageBoxRef = useRef()
     useEffect(() => {
         const messageBoxElement = messageBoxRef.current
         messageBoxElement.scrollTop = messageBoxElement.scrollHeight
-        console.log(messageBoxElement)
     }, [messages]);
     return (
         <div className='bg-white py-8 h-fit  px-6 mt-8 md:mt-0'>
