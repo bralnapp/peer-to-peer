@@ -13,6 +13,7 @@ const RecentTransactions = ({ orderList, setOrderList }) => {
     const sections = ["all", 'initiated', 'accepted', 'completed', 'fulfilled', 'cancelled', 'indispute']
     const [activeSection, setActiveSection] = useState(0)
     const navigate = useNavigate();
+    console.log(orderList)
     const handleNavigation = (to) => navigate(to)
     const getOrders = async () => {
         try {
@@ -26,15 +27,12 @@ const RecentTransactions = ({ orderList, setOrderList }) => {
         }
     }
 
-    const classNames = (...classes) => classes.filter(Boolean).join(' ')
-
-
     const handleSeeTransaction = (orderId) => {
         const _id = Math.round((formatUnit(orderId) * (10 ** 18)) - 1)
         handleNavigation(`/exchange/${_id}`)
     }
 
-    const recentTransactionsAll = orderList.filter((item) => item.sender.toLowerCase() === account.toLowerCase())
+    const recentTransactionsAll = orderList.filter((item) => item?.sender.toLowerCase() === account.toLowerCase() || item?.receiver?.toLowerCase() === account.toLowerCase())
     const transactionCategery = (state) => {
         if (state === 0) return recentTransactionsAll
         return recentTransactionsAll?.filter(item => item?.state === state - 1)
