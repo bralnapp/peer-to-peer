@@ -15,6 +15,12 @@
 [![GitHub stars][star-shield]][star-url]
 [![GitHub license][license-shield]][license-url]
 
+# Radenu
+
+
+> Radenu is a project to ease broderless transfer of funds from anywhere in the world to Nigeria with the help of blockchain technology. 
+
+
 ### Install
 ```bash
 git clone https://github.com/bralnapp/peer-to-peer.git
