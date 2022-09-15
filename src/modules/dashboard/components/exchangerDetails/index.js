@@ -3,21 +3,31 @@ import Input from 'src/modules/common/components/input'
 import Button from 'src/modules/common/components/Button'
 import { useParams } from 'react-router-dom'
 import useChat from 'src/hooks/useChat'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useContractContext } from 'src/context/ContractContext'
 
 
 
 const ExchangerDetails = ({ address, transactionState }) => {
+    const { account } = useContractContext()
     const { id: orderId } = useParams()
-    const { messages, sendMessage } = useChat("hello")
+
+    // const roomId = `${sender?.toLowerCase()}${account?.toLowerCase()}${orderId}`
+const messageBoxRef = useRef()
+    const { messages, sendMessage } = useChat(orderId)
     const [userMessage, setUserMessage] = useState('');
 
     const handleChangeText = (e) => setUserMessage(e.target.value)
-    const handleSendMessage = () => {
+    const handleSendMessage = (e) => {
+        e.preventDefault()
         sendMessage(userMessage)
         setUserMessage(' ')
     }
-
+    useEffect(() => {
+        const messageBoxElement = messageBoxRef.current
+        messageBoxElement.scrollTop = messageBoxElement.scrollHeight
+        console.log(messageBoxElement)
+    }, [messages]);
     return (
         <div className='bg-white py-8 h-fit  px-6 mt-8 md:mt-0'>
             <h3 className='text-[#192839] capitalize  font-medium text-lg mb-[41px]'>exchanger</h3>
@@ -37,19 +47,19 @@ const ExchangerDetails = ({ address, transactionState }) => {
                     <div className='mb-10'>No one has accepted  your order yet.</div>
             }
 
-            <div className='error h-[200px]'>
-                <ul>
+            <div ref={messageBoxRef} className='overflow-y-scroll border-[#A7B7C8] border p-2 h-[200px]'>
+                <ul className='space-y-8 text-sm'>
                     {messages?.map((msg, index) => [
-                        <li key={index} className=''>
-                            <div>
-                                {msg?.body}
-                                {/* <span>{msg.sender}</span> */}
-                            </div>
+                        <li key={index} className={`rounded-lg p-2 ${msg.ownedByCurrentUser ? "bg-[#F2F3F7] text-[#595959]" : "bg-[#8E7CFF] text-white"}`}>
+                            {msg?.body}
+                            <p className='mt-2'>sent by {msg.ownedByCurrentUser ? formatWalletAddress(account) : formatWalletAddress(address)}</p>
+
+                            {/* <span>{msg.sender}</span> */}
                         </li>
                     ])}
                 </ul>
             </div>
-            <div className="">
+            <form onSubmit={handleSendMessage} className="">
                 <Input
                     onChange={handleChangeText}
                     value={userMessage}
@@ -57,18 +67,12 @@ const ExchangerDetails = ({ address, transactionState }) => {
                     className="mt-5"
                 />
                 <Button
-                    onClick={handleSendMessage}
                     title="send message"
                     className='ml-auto mt-5 text-sm p-2'
 
                 />
-            </div>
-            {/* <button className="rounded w-full h-10 text-sm bg-[#F5F5F5] flex items-center justify-center text-[#1C144C]">
-                <div className="flex items-center space-x-3">
-                    <img src={ChatIcon} className="h-3 w-3" alt=""/>
-                    <p>Send A Message</p>
-                </div>
-            </button> */}
+            </form>
+
 
         </div>
     )
