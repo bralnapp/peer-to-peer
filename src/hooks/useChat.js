@@ -11,7 +11,10 @@ const useChat = (roomId) => {
   useEffect(() => {
     // Creates a WebSocket connection
     socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
-      transports : ['websocket'],
+      withCredentials: true,
+      extraHeaders: {
+        "my-custom-header": "abcd"
+      },
       query: { roomId },
     });
 
