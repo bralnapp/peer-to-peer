@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import NoTransactionIcon from 'src/assests/noTransaction.png'
@@ -10,6 +10,8 @@ import { formatDate, formatUnit } from 'src/utils/helpers/format.helper';
 
 const RecentTransactions = ({ orderList, setOrderList }) => {
     const { account } = useContractContext()
+    const sections = ["all", 'initiated', 'accepted', 'completed', 'fulfilled', 'cancelled', 'indispute']
+    const [activeSection, setActiveSection] = useState(0)
     const navigate = useNavigate();
     const handleNavigation = (to) => navigate(to)
     const getOrders = async () => {
@@ -24,19 +26,32 @@ const RecentTransactions = ({ orderList, setOrderList }) => {
         }
     }
 
+    const classNames = (...classes) => classes.filter(Boolean).join(' ')
+
+
     const handleSeeTransaction = (orderId) => {
         const _id = Math.round((formatUnit(orderId) * (10 ** 18)) - 1)
         handleNavigation(`/exchange/${_id}`)
     }
 
-    const recentTransactions = orderList.filter((item) => item.sender.toLowerCase() === account.toLowerCase())
+    const recentTransactionsAll = orderList.filter((item) => item.sender.toLowerCase() === account.toLowerCase())
+    const transactionCategery = (state) => {
+        if (state === 0) return recentTransactionsAll
+        return recentTransactionsAll?.filter(item => item?.state === state - 1)
+
+
+    }
+
+    const changeActiveSection = (index) => {
+        setActiveSection(index)
+    }
 
     useEffect(() => {
         getOrders()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account]);
     return (
-        <div className="bg-white mt-5 rounded-2xl p-6 h-[360px]">
+        <div className="bg-white mt-5 rounded-2xl p-6 h-[360px] lg:h-[400px]">
             <h3 className="capitalize font-medium md:text-xl text-[#192839]">recent transactions</h3>
             {
                 false ? (
@@ -50,6 +65,17 @@ const RecentTransactions = ({ orderList, setOrderList }) => {
                 ) : (
                     // list of transactions
                     <div className='mt-6'>
+
+                        <div className="hidden lg:flex items-center space-x-2 mb-6 pb-2 border-b border-[#F0F0F0]">
+                            {
+                                sections.map((item, index) => (
+                                    <div key={item} onClick={() => changeActiveSection(index)} className={`text-[#737374] cursor-pointer capitalize text-sm leading-[19px] ${activeSection === index ? "text-[#5E44FF]" : ""}`}>
+                                        {item}
+                                    </div>
+                                ))
+                            }
+                        </div>
+
                         {/* Table heading */}
                         <div className="grid grid-cols-4 capitalize pb-[14px] w-full border-b border-[#F0F0F0] text-[#5B616E] text-sm leading-[18px]">
                             <div className="">reciepient</div>
@@ -60,9 +86,10 @@ const RecentTransactions = ({ orderList, setOrderList }) => {
                         </div>
 
                         {/* Table body */}
+
                         <div className="h-[215px] text-[#1C144C] overflow-auto">
                             {
-                                recentTransactions?.map((item, index) => (
+                                transactionCategery(activeSection)?.map((item, index) => (
                                     <div
                                         key={index}
                                         onClick={() => handleSeeTransaction(item.orderId)}
@@ -78,7 +105,6 @@ const RecentTransactions = ({ orderList, setOrderList }) => {
                                 ))
                             }
                         </div>
-
                     </div>
                 )
             }
